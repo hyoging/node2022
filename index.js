@@ -3,7 +3,6 @@ const fs = require("fs")
 const url = require('url');
 
 const app = http.createServer(function (req,res) {
-
     let url = req.url;
     let queryData = url.parse(_url, true).query;
     res.end(queryData.id);
