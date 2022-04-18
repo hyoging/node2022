@@ -50,7 +50,12 @@ const app = http.createServer(function (request, response) {
         fs.readFile(`data/${queryData.id}`, 'utf8', function (err, description){
           const title = queryData.id
           const list = templateList(data);
-          const template = templateHTML(title,list,description,`<a href="create">create</a> <a href="/update?id=${title}">update</a>`);
+          const template = templateHTML(title,list,description,`<a href="create">create</a> <a href="/update?id=${title}">update</a>
+          <form action="delete_process" method="post">
+                <input type="hidden" name="id" value="${title}">
+                <input type="submit" value="delete">
+           </form>
+            `);
           response.writeHead(200)
           response.end(template)
         })
@@ -120,9 +125,20 @@ const app = http.createServer(function (request, response) {
             response.end();
           })
         })
-
-
-
+      });
+    }
+    else if(pathname === '/delete_process'){
+      let body = '';
+      request.on('data',function (data){
+        body += body + data;
+      });
+      request.on('end',function (){
+        const post = qs.parse(body);
+        const id = post.id;    // 바꾸기 전의 파일이름(게시글 제목)
+        fs.unlink(`data/${id}`, function (err){
+          response.writeHead(302,{Location:'/'});
+          response.end();
+        })
       });
     }
     else {
