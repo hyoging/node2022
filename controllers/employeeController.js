@@ -15,7 +15,7 @@ const showAll = function (req, res, next){
         })
 }
 const show = function (req, res, next){
-    const employeeID = req.body_id
+    const employeeID = req.body._id
     Employee.findById(employeeID)
         .then(function(response){
             res.json({
@@ -31,7 +31,7 @@ const show = function (req, res, next){
 
 
 // Employee 데이터 INSERT
-const insert =function (req, res, next){
+const insert = function (req, res, next){
     const data = new Employee({
         name : req.body.name,
         age : req.body.age,
@@ -51,6 +51,42 @@ const insert =function (req, res, next){
         })
 }
 
-module.exports - {
-    showAll, show, insert
+const update = function (req, res, next){
+    const employeeID = req.body._id;
+    
+    const updateData = {
+        name : req.body.name,
+        age : req.body.age,
+        phone: req.body.phone
+    }
+    Employee.findByIdAndUpdate(employeeID, {$set: updateData})
+        .then(function (){
+            res.json({
+                message: 'Employee 갱신(update) 성공'
+            })
+        })
+        .catch(function (error){
+            res.json({
+                message : 'Employee 갱신(update) 에러'
+            })
+        })
+}
+
+const destroy = function (req, res, next){
+    const employeeID = req.body._id
+     Employee.findByIdAndRemove(employeeID)
+        .then(function (){
+            res.json({
+                message: 'Employee 삭제(delete) 성공'
+            })
+        })
+        .catch(function (error){
+            res.json({
+                message : 'Employee 삭제(delete) 에러'
+            })
+        })
+}
+
+module.exports = {
+    showAll, show, insert, update, destroy
 }

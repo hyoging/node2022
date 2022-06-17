@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const {module} = require("mongoose");
+// const {module} = require("mongoose");
 const Schema = mongoose.Schema
 
 const employeeSchema = new Schema({
